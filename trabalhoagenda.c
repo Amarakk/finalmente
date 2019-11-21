@@ -85,12 +85,12 @@ int pesquisar(){
 
         
         if (x == 0){
-            printf("\nNome: %s",contatos[i].nome);
+            printf("--------------\nNome: %s",contatos[i].nome);
             printf("\nTelefone: %s",contatos[i].telefone);
             printf("\nEnderco: %s",contatos[i].endereco);
             printf("\nCidade: %s",contatos[i].cidade);
             printf("\nEstado: %s",contatos[i].estado);
-            printf("\nNascimento: %d/%d/%d",contatos[i].dia,contatos[i].mes,contatos[i].ano);
+            printf("\nNascimento: %d/%d/%d\n--------------",contatos[i].dia,contatos[i].mes,contatos[i].ano);
             result=i;
             break;
         }
@@ -105,15 +105,29 @@ int pesquisar(){
 
 int modificar(){
     int indice;
-    printf("Modificação de contato");
+    int dois;
+    if (contadorGlobal>0){
+    printf("Modificação de contato\n--------------");
     
-    for(int i=0; i<=contadorGlobal;i++){
-        printf("\n%d-%s",i,contatos[i].nome);
+    for(int i=0; i<contadorGlobal;i++){
+        printf("\n%d-%s",i+1,contatos[i].nome);
     }
     printf("\nEscolha um contato\n");
     scanf("%d",&indice);
+    indice--;
+    while(indice<0 || indice>contadorGlobal-1){
+        printf("\nValor inválido\n");
+        printf("\nEscolha um contato\n");
+        scanf("%d",&dois);
+        indice = dois-1;
+        return indice;
+    }
 
     return indice;
+    }else if(contadorGlobal==0){
+        printf("\nNao ha contatos salvos\n");
+        return 400;
+    }
 
 
 }
@@ -175,8 +189,14 @@ agenda modificarParte2(int change){
 
 void showAll(){
     char nomes[100];
-    for(int i=0; i<=contadorGlobal;i++){
-        printf("%c\n",*(contatos[i].nome));
+    if (contadorGlobal>0){
+        for(int i=0; i<contadorGlobal;i++){
+            printf("--------------\n%d-%s\n",i+1,contatos[i].nome);
+        }
+        printf("--------------\n");
+    }else if(contadorGlobal==0){
+        printf("\nNao ha contatos salvos\n");
+      
     }
     printf("Para mais detalhes sobre o contato selecione a opcao 2.\n");
 
@@ -211,7 +231,9 @@ int main(){
         }
         if(action==3){
             mudanca=modificar();
+            if(mudanca!=400){
             modificarParte2(mudanca);
+            }
         }
         if(action==4){
             showAll();
